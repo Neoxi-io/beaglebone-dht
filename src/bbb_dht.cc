@@ -38,5 +38,5 @@ namespace dht {
     Set(exports, New<String>("read").ToLocalChecked(), tpl->GetFunction(context).ToLocalChecked());
   }
 
-  NODE_MODULE(beaglebone_dht, Init)
+  NODE_MODULE(NODE_GYP_MODULE_NAME, Init)
 }
