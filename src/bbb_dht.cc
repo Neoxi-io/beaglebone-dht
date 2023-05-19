@@ -11,9 +11,9 @@ namespace dht {
   using v8::Value;
   
   void Method(const FunctionCallbackInfo<Value>& args) {
-    int type = args[0]->Int32Value();
-    int gpio_base = args[1]->Int32Value();
-    int gpio_number = args[2]->Int32Value();
+    int type = args[0]->Int32Value(context).ToChecked();
+    int gpio_base = args[1]->Int32Value(context).ToChecked();
+    int gpio_number = args[2]->Int32Value(context).ToChecked();
     float humidity = 0;
     float temperature = 0;
     int result = bbb_dht_read(type, gpio_base, gpio_number, &humidity, &temperature);
