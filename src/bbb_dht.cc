@@ -10,7 +10,10 @@ namespace dht {
   using v8::Context;
   using v8::Local;
   using v8::Object;
+  using v8::String;
   using v8::Value;
+  using v8::Integer;
+  using v8::Number;
 
   void Method(const FunctionCallbackInfo<Value>& args) {
     Local<Context> context = args.GetIsolate()->GetCurrentContext();
