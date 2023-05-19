@@ -1,4 +1,3 @@
-#include <v8.h>
 #include <nan.h>
 #include "bbb_dht_read.h"
 
@@ -14,6 +13,7 @@ namespace dht {
   using v8::Value;
   using v8::Integer;
   using v8::Number;
+  using v8::FunctionTemplate;
 
   void Method(const FunctionCallbackInfo<Value>& args) {
     Local<Context> context = args.GetIsolate()->GetCurrentContext();
@@ -33,7 +33,9 @@ namespace dht {
   }
 
   void Init(Local<Object> exports) {
-    Set(exports, New<String>("read").ToLocalChecked(), FunctionTemplate::New(exports->GetIsolate(), Method)->GetFunction());
+    Local<Context> context = exports->CreationContext();
+    Local<FunctionTemplate> tpl = New<FunctionTemplate>(context, Method);
+    Set(exports, New<String>("read").ToLocalChecked(), tpl->GetFunction(context).ToLocalChecked());
   }
 
   NODE_MODULE(beaglebone_dht, Init)
