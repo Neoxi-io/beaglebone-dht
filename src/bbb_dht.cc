@@ -2,32 +2,34 @@
 #include "bbb_dht_read.h"
 
 namespace dht {
-  
+
   using Nan::FunctionCallbackInfo;
   using Nan::New;
-  using Nan::SetMethod;
-  using v8::Object;
+  using Nan::Set;
+  using v8::Context;
   using v8::Local;
+  using v8::Object;
   using v8::Value;
-  
+
   void Method(const FunctionCallbackInfo<Value>& args) {
+    Local<Context> context = args.GetIsolate()->GetCurrentContext();
     int type = args[0]->Int32Value(context).ToChecked();
     int gpio_base = args[1]->Int32Value(context).ToChecked();
     int gpio_number = args[2]->Int32Value(context).ToChecked();
     float humidity = 0;
     float temperature = 0;
     int result = bbb_dht_read(type, gpio_base, gpio_number, &humidity, &temperature);
-    
+
     Local<Object> obj = New<Object>();
-    obj->Set(New("result").ToLocalChecked(), New(result));
-    obj->Set(New("humidity").ToLocalChecked(), New(humidity));
-    obj->Set(New("temperature").ToLocalChecked(), New(temperature));
-  
+    Set(obj, New<String>("result").ToLocalChecked(), New<Integer>(result));
+    Set(obj, New<String>("humidity").ToLocalChecked(), New<Number>(humidity));
+    Set(obj, New<String>("temperature").ToLocalChecked(), New<Number>(temperature));
+
     args.GetReturnValue().Set(obj);
   }
 
-  void Init(Local<v8::Object> exports) {
-    SetMethod(exports, "read", Method);
+  void Init(Local<Object> exports) {
+    Set(exports, New<String>("read").ToLocalChecked(), FunctionTemplate::New(exports->GetIsolate(), Method)->GetFunction());
   }
 
   NODE_MODULE(beaglebone_dht, Init)
