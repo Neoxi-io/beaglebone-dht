@@ -33,7 +33,7 @@ namespace dht {
   }
 
   void Init(Local<Object> exports) {
-    Local<Context> context = exports->CreationContext();
+    Local<Context> context = exports->GetCreationContext();
     Local<FunctionTemplate> tpl = New<FunctionTemplate>(context, Method);
     Set(exports, New<String>("read").ToLocalChecked(), tpl->GetFunction(context).ToLocalChecked());
   }
